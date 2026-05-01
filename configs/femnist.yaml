@@ -1,0 +1,61 @@
+experiment_name: femnist_cpa_lppf
+device: auto
+seed: 2026
+output_dir: runs/femnist
+
+dataset:
+  name: femnist
+  root: data
+  download: true
+  synthetic: false
+  synthetic_fallback: true
+  synthetic_size: 60000
+  test_size: 10000
+  num_classes: 62
+  channels: 1
+  image_size: 28
+  num_workers: 4
+  partition: writer
+
+hfl:
+  num_clients: 100
+  num_edges: 5
+  clients_per_edge: 20
+  clients_per_round: 20
+  rounds: 100
+  local_epochs: 1
+  dirichlet_alpha: 0.5
+  share_number: 3
+  reconstruction_threshold: 2
+  colluding_edges: 2
+  target_clients: 20
+
+training:
+  batch_size: 128
+  lr: 0.001
+  weight_decay: 0.0001
+  optimizer: adamw
+  max_batches_per_client: null
+  evaluate_every: 10
+
+attack:
+  feature_dim: 4096
+  trials_per_target: 5
+  dlg_steps: 300
+  gismn_steps: 500
+  private_classes: 62
+
+lppf:
+  lgs_clip_norm: 1.0
+  lgs_noise_multiplier: 0.06
+  crsa_noise_multiplier: 0.05
+  shp_mask_ratio: 0.20
+  shp_structured_dropout: 0.10
+  par_lambda: 0.05
+  private_classes: 62
+
+baselines:
+  dp_clip_norm: 1.0
+  dp_noise_multiplier: 0.25
+  awdp_base_noise: 0.15
+  awdp_target_clip_quantile: 0.75
